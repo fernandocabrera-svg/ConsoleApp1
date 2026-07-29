@@ -1,50 +1,39 @@
-﻿using System;
+using System;
 
 namespace SistemaGestionUnicaesStruct
 {
-    // =========================================================================
-    // ESTRUCTURA DE DATOS DEL ESTUDIANTE (REGISTRO SIN CLASES DE POO)
-    // =========================================================================
     struct Estudiante
     {
         public string Codigo;
         public string Carnet;
         public string Nombre;
-        public string Genero; // "Masculino" o "Femenino"
+        public string Genero;
         public int Edad;
         public string Facultad;
         public string Carrera;
-        public string Materia; // Materia seleccionada (de las 5 de su carrera)
-        public double[] Notas;  // Arreglo dinamico de notas (segun CANT_NOTAS)
+        public string Materia;
+        public double[] Notas;
         public double Asistencia;
         public bool Activo;
     }
 
     internal class Program
     {
-        // =========================================================================
-        // ZONA DE CONFIGURACIÓN Y VALORES EDITABLES (FÁCIL EDICIÓN)
-        // =========================================================================
-        const int MAX_ESTUDIANTES_POR_CARRERA = 50; // Limite de 50 alumnos por carrera
-        const int MAX_CARRERAS = 4;                 // Cantidad de carreras en el sistema
+        const int MAX_ESTUDIANTES_POR_CARRERA = 50;
+        const int MAX_CARRERAS = 4;
         const int CAPACIDAD = MAX_ESTUDIANTES_POR_CARRERA * MAX_CARRERAS;
-
-        // EDITAR AQUÍ: Cantidad de notas/evaluaciones (Base: 3, editable a 4, 5, etc.)
         const int CANT_NOTAS = 3;
+        const double NOTA_MINIMA_APROBACION = 6.0;
+        const double ASISTENCIA_MINIMA_APROBACION = 75.0;
+        const int EDAD_MINIMA = 16;
+        const int EDAD_MAXIMA = 50;
 
-        const double NOTA_MINIMA_APROBACION = 6.0;        // EDITAR AQUÍ: Nota o CUM minimo para aprobar
-        const double ASISTENCIA_MINIMA_APROBACION = 75.0; // EDITAR AQUÍ: % Asistencia minimo para aprobar
-        const int EDAD_MINIMA = 16;                       // EDITAR AQUÍ: Edad minima permitida
-        const int EDAD_MAXIMA = 50;                       // EDITAR AQUÍ: Edad maxima permitida
-
-        // EDITAR AQUÍ: Nombres de las Facultades
         static string[] LISTA_FACULTADES = {
             "Facultad de Ingenieria y Arquitectura",
             "Facultad de Ciencias de la Salud",
             "Facultad de Ciencias y Humanidades"
         };
 
-        // EDITAR AQUÍ: Nombres de las Carreras
         static string[] LISTA_CARRERAS = {
             "Ingenieria en Sistemas Informaticos",
             "Ingenieria Industrial",
@@ -52,7 +41,6 @@ namespace SistemaGestionUnicaesStruct
             "Licenciatura en Psicologia"
         };
 
-        // EDITAR AQUÍ: Facultad a la que pertenece cada carrera
         static string[] FACULTAD_DE_CARRERA = {
             "Facultad de Ingenieria y Arquitectura",
             "Facultad de Ingenieria y Arquitectura",
@@ -60,18 +48,12 @@ namespace SistemaGestionUnicaesStruct
             "Facultad de Ciencias y Humanidades"
         };
 
-        // EDITAR AQUÍ: 5 Materias por cada carrera
-        // Fila 0: Materias para Carrera 1 (Ingenieria en Sistemas)
-        // Fila 1: Materias para Carrera 2 (Ingenieria Industrial)
-        // Fila 2: Materias para Carrera 3 (Doctorado en Medicina)
-        // Fila 3: Materias para Carrera 4 (Licenciatura en Psicologia)
         static string[,] MATERIAS_POR_CARRERA = {
             { "Programacion I", "Base de Datos I", "Calculo I", "Redes de Computadoras", "Fisica I" },
             { "Gestion de Calidad", "Investigacion de Operaciones", "Estadistica", "Procesos Industriales", "Ergonomia" },
             { "Anatomia Humana", "Biologia Celular", "Bioquimica", "Fisiologia", "Farmacologia" },
             { "Psicologia General", "Neuroanatomia", "Psicologia del Desarrollo", "Psicofisiologia", "Teorias de la Personalidad" }
         };
-        // =========================================================================
 
         static Estudiante[] listaEstudiantes = new Estudiante[CAPACIDAD];
 
@@ -122,10 +104,6 @@ namespace SistemaGestionUnicaesStruct
             } while (opcion != 9);
         }
 
-        // =========================================================================
-        // MÓDULO CRUD
-        // =========================================================================
-
         static void Registrar()
         {
             Console.WriteLine("--- REGISTRO DE ESTUDIANTE ---");
@@ -141,7 +119,6 @@ namespace SistemaGestionUnicaesStruct
                 return;
             }
 
-            // Seleccionar Carrera
             Console.WriteLine("\nSeleccione la Carrera:");
             for (int i = 0; i < LISTA_CARRERAS.Length; i++)
             {
@@ -157,7 +134,6 @@ namespace SistemaGestionUnicaesStruct
             int idxCarrera = cSel - 1;
             string carreraStr = LISTA_CARRERAS[idxCarrera];
 
-            // Validar cupo de 50 estudiantes por carrera
             int cInscritos = 0;
             for (int i = 0; i < CAPACIDAD; i++)
             {
@@ -170,7 +146,6 @@ namespace SistemaGestionUnicaesStruct
                 return;
             }
 
-            // Seleccionar 1 de las 5 Materias de la Carrera
             Console.WriteLine("\nSeleccione la Materia para esta carrera:");
             for (int j = 0; j < 5; j++)
             {
@@ -184,14 +159,12 @@ namespace SistemaGestionUnicaesStruct
             }
             string materiaStr = MATERIAS_POR_CARRERA[idxCarrera, mSel - 1];
 
-            // Crear objeto Struct
             Estudiante est = new Estudiante();
             est.Carrera = carreraStr;
             est.Facultad = FACULTAD_DE_CARRERA[idxCarrera];
             est.Materia = materiaStr;
-            est.Notas = new double[CANT_NOTAS]; // Inicializar arreglo de notas segun CANT_NOTAS
+            est.Notas = new double[CANT_NOTAS];
 
-            // Codigo Unico
             do
             {
                 Console.Write("Codigo Interno Unico: ");
@@ -200,7 +173,6 @@ namespace SistemaGestionUnicaesStruct
                 else if (ExisteCod(est.Codigo)) Console.WriteLine("Este codigo ya existe.");
             } while (string.IsNullOrEmpty(est.Codigo) || ExisteCod(est.Codigo));
 
-            // Carnet Unico
             do
             {
                 Console.Write("Carnet del Estudiante: ");
@@ -209,11 +181,9 @@ namespace SistemaGestionUnicaesStruct
                 else if (ExisteCar(est.Carnet)) Console.WriteLine("Este carnet ya existe.");
             } while (string.IsNullOrEmpty(est.Carnet) || ExisteCar(est.Carnet));
 
-            // Nombre Completo
             Console.Write("Nombre Completo: ");
             est.Nombre = Console.ReadLine()?.Trim() ?? "Sin Nombre";
 
-            // Genero
             string g;
             do
             {
@@ -222,20 +192,17 @@ namespace SistemaGestionUnicaesStruct
             } while (g != "M" && g != "F");
             est.Genero = (g == "M") ? "Masculino" : "Femenino";
 
-            // Validacion Edad (16 a 50)
             do
             {
                 Console.Write("Edad (" + EDAD_MINIMA + " a " + EDAD_MAXIMA + " años): ");
             } while (!int.TryParse(Console.ReadLine(), out est.Edad) || est.Edad < EDAD_MINIMA || est.Edad > EDAD_MAXIMA);
 
-            // Ingreso de Notas (Dinamico segun CANT_NOTAS)
             Console.WriteLine("\nIngreso de las " + CANT_NOTAS + " Evaluaciones:");
             for (int k = 0; k < CANT_NOTAS; k++)
             {
                 est.Notas[k] = LeerNota("Nota " + (k + 1) + " (0 a 10): ");
             }
 
-            // Asistencia
             do
             {
                 Console.Write("Porcentaje de Asistencia (0 a 100%): ");
@@ -322,13 +289,11 @@ namespace SistemaGestionUnicaesStruct
             {
                 Console.WriteLine("Modificando registro de: " + listaEstudiantes[i].Nombre);
 
-                // Modificar las N notas
                 for (int k = 0; k < CANT_NOTAS; k++)
                 {
                     listaEstudiantes[i].Notas[k] = LeerNota("Nueva Nota " + (k + 1) + " (0 a 10): ");
                 }
 
-                // Modificar asistencia
                 double a;
                 do
                 {
@@ -356,7 +321,7 @@ namespace SistemaGestionUnicaesStruct
 
             if (i != -1)
             {
-                listaEstudiantes[i].Activo = false; // Liberar el espacio en el arreglo
+                listaEstudiantes[i].Activo = false;
                 Console.WriteLine("\n[EXITO] El estudiante " + listaEstudiantes[i].Nombre + " ha sido dado de baja del sistema.");
             }
             else
@@ -364,10 +329,6 @@ namespace SistemaGestionUnicaesStruct
                 Console.WriteLine("\nEstudiante no encontrado.");
             }
         }
-
-        // =========================================================================
-        // MÓDULO DE ANÁLISIS, ESTADÍSTICAS Y REPORTES
-        // =========================================================================
 
         static void EstadisticasFacultad()
         {
@@ -540,10 +501,6 @@ namespace SistemaGestionUnicaesStruct
             Console.WriteLine(" Nombre: " + listaEstudiantes[idxPeor].Nombre + " | Carnet: " + listaEstudiantes[idxPeor].Carnet + " | CUM: " + peorCUM.ToString("F2"));
         }
 
-        // =========================================================================
-        // FUNCIONES AUXILIARES Y CÁLCULO DE CUM
-        // =========================================================================
-
         static double CalcularCUM(Estudiante e)
         {
             if (e.Notas == null || e.Notas.Length == 0) return 0.0;
@@ -654,7 +611,7 @@ namespace SistemaGestionUnicaesStruct
                     double cumA = CalcularCUM(listaEstudiantes[arr[j]]);
                     double cumB = CalcularCUM(listaEstudiantes[arr[j + 1]]);
 
-                    if (cumA < cumB) // Orden descendente por CUM
+                    if (cumA < cumB)
                     {
                         int temp = arr[j];
                         arr[j] = arr[j + 1];
