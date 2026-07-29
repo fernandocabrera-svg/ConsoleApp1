@@ -1,6 +1,6 @@
 using System;
 
-namespace SistemaGestionUnicaesStruct
+namespace SistemaGestionUnicaes
 {
     struct Estudiante
     {
@@ -22,7 +22,9 @@ namespace SistemaGestionUnicaesStruct
         const int MAX_ESTUDIANTES_POR_CARRERA = 50;
         const int MAX_CARRERAS = 4;
         const int CAPACIDAD = MAX_ESTUDIANTES_POR_CARRERA * MAX_CARRERAS;
+
         const int CANT_NOTAS = 3;
+
         const double NOTA_MINIMA_APROBACION = 6.0;
         const double ASISTENCIA_MINIMA_APROBACION = 75.0;
         const int EDAD_MINIMA = 16;
@@ -106,7 +108,7 @@ namespace SistemaGestionUnicaesStruct
 
         static void Registrar()
         {
-            Console.WriteLine("--- REGISTRO DE ESTUDIANTE ---");
+            Console.WriteLine("REGISTRO DE ESTUDIANTE");
             int idxLibre = -1;
             for (int i = 0; i < CAPACIDAD; i++)
             {
@@ -119,7 +121,7 @@ namespace SistemaGestionUnicaesStruct
                 return;
             }
 
-            Console.WriteLine("\nSeleccione la Carrera:");
+            Console.WriteLine("Seleccione la Carrera:");
             for (int i = 0; i < LISTA_CARRERAS.Length; i++)
             {
                 Console.WriteLine((i + 1) + ". " + LISTA_CARRERAS[i]);
@@ -142,11 +144,11 @@ namespace SistemaGestionUnicaesStruct
 
             if (cInscritos >= MAX_ESTUDIANTES_POR_CARRERA)
             {
-                Console.WriteLine("\n[ERROR] La carrera '" + carreraStr + "' ya alcanzo el limite maximo de " + MAX_ESTUDIANTES_POR_CARRERA + " estudiantes.");
+                Console.WriteLine("[ERROR] La carrera '" + carreraStr + "' ya alcanzo el limite maximo de " + MAX_ESTUDIANTES_POR_CARRERA + " estudiantes.");
                 return;
             }
 
-            Console.WriteLine("\nSeleccione la Materia para esta carrera:");
+            Console.WriteLine("Seleccione la Materia para esta carrera:");
             for (int j = 0; j < 5; j++)
             {
                 Console.WriteLine((j + 1) + ". " + MATERIAS_POR_CARRERA[idxCarrera, j]);
@@ -197,7 +199,7 @@ namespace SistemaGestionUnicaesStruct
                 Console.Write("Edad (" + EDAD_MINIMA + " a " + EDAD_MAXIMA + " años): ");
             } while (!int.TryParse(Console.ReadLine(), out est.Edad) || est.Edad < EDAD_MINIMA || est.Edad > EDAD_MAXIMA);
 
-            Console.WriteLine("\nIngreso de las " + CANT_NOTAS + " Evaluaciones:");
+            Console.WriteLine("Ingreso de las " + CANT_NOTAS + " Evaluaciones:");
             for (int k = 0; k < CANT_NOTAS; k++)
             {
                 est.Notas[k] = LeerNota("Nota " + (k + 1) + " (0 a 10): ");
@@ -212,13 +214,13 @@ namespace SistemaGestionUnicaesStruct
             listaEstudiantes[idxLibre] = est;
 
             double cumCalculado = CalcularCUM(est);
-            Console.WriteLine("\n[EXITO] Estudiante registrado correctamente.");
+            Console.WriteLine("[EXITO] Estudiante registrado correctamente.");
             Console.WriteLine("CUM del Estudiante: " + cumCalculado.ToString("F2"));
         }
 
         static void Mostrar()
         {
-            Console.WriteLine("--- LISTADO DE ESTUDIANTES REGISTRADOS ---");
+            Console.WriteLine("LISTADO DE ESTUDIANTES REGISTRADOS");
             bool alguno = false;
             for (int i = 0; i < CAPACIDAD; i++)
             {
@@ -233,7 +235,7 @@ namespace SistemaGestionUnicaesStruct
                     Console.WriteLine("Nombre: " + e.Nombre + " | Genero: " + e.Genero + " | Edad: " + e.Edad);
                     Console.WriteLine("Facultad: " + e.Facultad);
                     Console.WriteLine("Carrera: " + e.Carrera + " | Materia: " + e.Materia);
-
+                    
                     Console.Write("Notas: ");
                     for (int k = 0; k < CANT_NOTAS; k++)
                     {
@@ -248,7 +250,7 @@ namespace SistemaGestionUnicaesStruct
 
         static void Buscar()
         {
-            Console.WriteLine("--- BUSCAR ESTUDIANTE ---");
+            Console.WriteLine("BUSCAR ESTUDIANTE");
             Console.Write("Ingrese el Carnet o Codigo a buscar: ");
             string q = Console.ReadLine()?.Trim() ?? "";
             int i = BuscarIdx(q);
@@ -258,12 +260,12 @@ namespace SistemaGestionUnicaesStruct
                 Estudiante e = listaEstudiantes[i];
                 double cum = CalcularCUM(e);
 
-                Console.WriteLine("\n--- ESTUDIANTE ENCONTRADO ---");
+                Console.WriteLine("ESTUDIANTE ENCONTRADO");
                 Console.WriteLine("Codigo: " + e.Codigo + " | Carnet: " + e.Carnet);
                 Console.WriteLine("Nombre: " + e.Nombre + " | Genero: " + e.Genero + " | Edad: " + e.Edad);
                 Console.WriteLine("Facultad: " + e.Facultad);
                 Console.WriteLine("Carrera: " + e.Carrera + " | Materia: " + e.Materia);
-
+                
                 Console.Write("Notas: ");
                 for (int k = 0; k < CANT_NOTAS; k++)
                 {
@@ -274,13 +276,13 @@ namespace SistemaGestionUnicaesStruct
             }
             else
             {
-                Console.WriteLine("\nEstudiante no encontrado.");
+                Console.WriteLine("Estudiante no encontrado.");
             }
         }
 
         static void Modificar()
         {
-            Console.WriteLine("--- MODIFICAR NOTAS Y ASISTENCIA ---");
+            Console.WriteLine("MODIFICAR NOTAS Y ASISTENCIA");
             Console.Write("Ingrese el Carnet o Codigo del estudiante a editar: ");
             string q = Console.ReadLine()?.Trim() ?? "";
             int i = BuscarIdx(q);
@@ -303,18 +305,18 @@ namespace SistemaGestionUnicaesStruct
                 listaEstudiantes[i].Asistencia = a;
 
                 double nuevoCum = CalcularCUM(listaEstudiantes[i]);
-                Console.WriteLine("\n[EXITO] Registro actualizado correctamente.");
+                Console.WriteLine("[EXITO] Registro actualizado correctamente.");
                 Console.WriteLine("Nuevo CUM calculado: " + nuevoCum.ToString("F2"));
             }
             else
             {
-                Console.WriteLine("\nEstudiante no encontrado.");
+                Console.WriteLine("Estudiante no encontrado.");
             }
         }
 
         static void Eliminar()
         {
-            Console.WriteLine("--- ELIMINAR ESTUDIANTE ---");
+            Console.WriteLine("ELIMINAR ESTUDIANTE");
             Console.Write("Ingrese el Carnet o Codigo a dar de baja: ");
             string q = Console.ReadLine()?.Trim() ?? "";
             int i = BuscarIdx(q);
@@ -322,7 +324,7 @@ namespace SistemaGestionUnicaesStruct
             if (i != -1)
             {
                 listaEstudiantes[i].Activo = false;
-                Console.WriteLine("\n[EXITO] El estudiante " + listaEstudiantes[i].Nombre + " ha sido dado de baja del sistema.");
+                Console.WriteLine("[EXITO] El estudiante " + listaEstudiantes[i].Nombre + " ha sido dado de baja del sistema.");
             }
             else
             {
@@ -338,7 +340,7 @@ namespace SistemaGestionUnicaesStruct
 
             foreach (string f in LISTA_FACULTADES)
             {
-                Console.WriteLine("\n>> FACULTAD: " + f.ToUpper());
+                Console.WriteLine(">> FACULTAD: " + f.ToUpper());
                 int tot = 0;
                 double sumCUM = 0;
                 double maxCUM = -1;
@@ -381,12 +383,16 @@ namespace SistemaGestionUnicaesStruct
                 double pctApAsis = ((double)apAsis / tot) * 100.0;
                 double pctRepAsis = ((double)repAsis / tot) * 100.0;
 
+                double pctM = ((double)cantM / tot) * 100.0;
+                double pctF = ((double)cantF / tot) * 100.0;
+
                 Console.WriteLine("   - Total Inscritos: " + tot);
-                Console.WriteLine("   - CUM Promedio Acumulado: " + cumPromedioGeneral.ToString("F2"));
+                Console.WriteLine("   - CUM Promedio General: " + cumPromedioGeneral.ToString("F2"));
                 Console.WriteLine("   - CUM Mas Alto: " + maxCUM.ToString("F2") + " | CUM Mas Bajo: " + minCUM.ToString("F2"));
-                Console.WriteLine("   - Aprobados por Nota/CUM: " + apNotas + " (" + pctApNota.ToString("F2") + "%) | Reprobados: " + repNotas + " (" + pctRepNota.ToString("F2") + "%)");
+                Console.WriteLine("   - Aprobados por Nota: " + apNotas + " (" + pctApNota.ToString("F2") + "%) | Reprobados: " + repNotas + " (" + pctRepNota.ToString("F2") + "%)");
                 Console.WriteLine("   - Aprobados por Asistencia: " + apAsis + " (" + pctApAsis.ToString("F2") + "%) | Reprobados: " + repAsis + " (" + pctRepAsis.ToString("F2") + "%)");
-                Console.WriteLine("   - Promedio Hombres: " + (cantM > 0 ? (sumM / cantM).ToString("F2") : "N/A") + " | Promedio Mujeres: " + (cantF > 0 ? (sumF / cantF).ToString("F2") : "N/A"));
+                Console.WriteLine("   - Varones: " + cantM + " (" + pctM.ToString("F2") + "%) - Promedio CUM: " + (cantM > 0 ? (sumM / cantM).ToString("F2") : "N/A"));
+                Console.WriteLine("   - Hembras: " + cantF + " (" + pctF.ToString("F2") + "%) - Promedio CUM: " + (cantF > 0 ? (sumF / cantF).ToString("F2") : "N/A"));
 
                 MostrarRankingFacultad(f);
             }
@@ -400,10 +406,15 @@ namespace SistemaGestionUnicaesStruct
 
             foreach (string c in LISTA_CARRERAS)
             {
-                Console.WriteLine("\n>> CARRERA: " + c.ToUpper());
+                Console.WriteLine(">> CARRERA: " + c.ToUpper());
                 int tot = 0;
+                double sumCUM = 0;
                 double maxCUM = -1, minCUM = 11;
-                int apNotas = 0, apAsis = 0;
+                int apNotas = 0, repNotas = 0;
+                int apAsis = 0, repAsis = 0;
+
+                int cantM = 0, cantF = 0;
+                double sumM = 0, sumF = 0;
 
                 for (int i = 0; i < CAPACIDAD; i++)
                 {
@@ -411,11 +422,16 @@ namespace SistemaGestionUnicaesStruct
                     {
                         tot++;
                         double cum = CalcularCUM(listaEstudiantes[i]);
+                        sumCUM += cum;
+
                         if (cum > maxCUM) maxCUM = cum;
                         if (cum < minCUM) minCUM = cum;
 
-                        if (cum >= NOTA_MINIMA_APROBACION) apNotas++;
-                        if (listaEstudiantes[i].Asistencia >= ASISTENCIA_MINIMA_APROBACION) apAsis++;
+                        if (cum >= NOTA_MINIMA_APROBACION) apNotas++; else repNotas++;
+                        if (listaEstudiantes[i].Asistencia >= ASISTENCIA_MINIMA_APROBACION) apAsis++; else repAsis++;
+
+                        if (listaEstudiantes[i].Genero == "Masculino") { cantM++; sumM += cum; }
+                        else { cantF++; sumF += cum; }
                     }
                 }
 
@@ -425,13 +441,22 @@ namespace SistemaGestionUnicaesStruct
                     continue;
                 }
 
+                double cumPromedioGeneral = sumCUM / tot;
                 double pctApNota = ((double)apNotas / tot) * 100.0;
+                double pctRepNota = ((double)repNotas / tot) * 100.0;
                 double pctApAsis = ((double)apAsis / tot) * 100.0;
+                double pctRepAsis = ((double)repAsis / tot) * 100.0;
+
+                double pctM = ((double)cantM / tot) * 100.0;
+                double pctF = ((double)cantF / tot) * 100.0;
 
                 Console.WriteLine("   - Total Alumnos: " + tot);
+                Console.WriteLine("   - CUM Promedio General: " + cumPromedioGeneral.ToString("F2"));
                 Console.WriteLine("   - CUM Mas Alto: " + maxCUM.ToString("F2") + " | CUM Mas Bajo: " + minCUM.ToString("F2"));
-                Console.WriteLine("   - Aprobacion por Nota/CUM: " + pctApNota.ToString("F2") + "% | Reprobacion: " + (100.0 - pctApNota).ToString("F2") + "%");
-                Console.WriteLine("   - Aprobacion por Asistencia: " + pctApAsis.ToString("F2") + "% | Reprobacion: " + (100.0 - pctApAsis).ToString("F2") + "%");
+                Console.WriteLine("   - Aprobados por Nota: " + apNotas + " (" + pctApNota.ToString("F2") + "%) | Reprobados: " + repNotas + " (" + pctRepNota.ToString("F2") + "%)");
+                Console.WriteLine("   - Aprobados por Asistencia: " + apAsis + " (" + pctApAsis.ToString("F2") + "%) | Reprobados: " + repAsis + " (" + pctRepAsis.ToString("F2") + "%)");
+                Console.WriteLine("   - Varones: " + cantM + " (" + pctM.ToString("F2") + "%) - Promedio CUM: " + (cantM > 0 ? (sumM / cantM).ToString("F2") : "N/A"));
+                Console.WriteLine("   - Hembras: " + cantF + " (" + pctF.ToString("F2") + "%) - Promedio CUM: " + (cantF > 0 ? (sumF / cantF).ToString("F2") : "N/A"));
 
                 MostrarRankingCarrera(c);
             }
@@ -439,7 +464,7 @@ namespace SistemaGestionUnicaesStruct
 
         static void ReporteCarrera()
         {
-            Console.WriteLine("--- REPORTE ACADEMICO DETALLADO POR CARRERA ---");
+            Console.WriteLine(" REPORTE ACADEMICO DETALLADO POR CARRERA ");
             for (int i = 0; i < LISTA_CARRERAS.Length; i++)
             {
                 Console.WriteLine((i + 1) + ". " + LISTA_CARRERAS[i]);
@@ -477,7 +502,7 @@ namespace SistemaGestionUnicaesStruct
                 }
             }
 
-            Console.WriteLine("\n=========================================================");
+            Console.WriteLine("=========================================================");
             Console.WriteLine(" REPORTE ACADEMICO: " + cSel.ToUpper());
             Console.WriteLine("=========================================================");
             Console.WriteLine(" Total de Alumnos Inscritos: " + tot);
@@ -494,10 +519,10 @@ namespace SistemaGestionUnicaesStruct
             Console.WriteLine(" CUM General de la Carrera: " + cumGeneralCarrera.ToString("F2"));
             Console.WriteLine(" Porcentaje de Aprobacion Global: " + pctAprobacionGlobal.ToString("F2") + "%");
 
-            Console.WriteLine("\n-- MEJOR ESTUDIANTE (RENDIMIENTO MAS ALTO) --");
+            Console.WriteLine(" MEJOR ESTUDIANTE (RENDIMIENTO MAS ALTO) ");
             Console.WriteLine(" Nombre: " + listaEstudiantes[idxMejor].Nombre + " | Carnet: " + listaEstudiantes[idxMejor].Carnet + " | CUM: " + mejorCUM.ToString("F2"));
 
-            Console.WriteLine("\n-- PEOR ESTUDIANTE (RENDIMIENTO MAS BAJO) --");
+            Console.WriteLine(" PEOR ESTUDIANTE (RENDIMIENTO MAS BAJO) ");
             Console.WriteLine(" Nombre: " + listaEstudiantes[idxPeor].Nombre + " | Carnet: " + listaEstudiantes[idxPeor].Carnet + " | CUM: " + peorCUM.ToString("F2"));
         }
 
@@ -555,10 +580,22 @@ namespace SistemaGestionUnicaesStruct
 
         static void MostrarRankingFacultad(string f)
         {
-            int[] arr = ObtenersIndicesFiltrados(i => listaEstudiantes[i].Facultad == f);
+            int count = 0;
+            for (int i = 0; i < CAPACIDAD; i++)
+            {
+                if (listaEstudiantes[i].Activo && listaEstudiantes[i].Facultad == f) count++;
+            }
+
+            int[] arr = new int[count];
+            int pos = 0;
+            for (int i = 0; i < CAPACIDAD; i++)
+            {
+                if (listaEstudiantes[i].Activo && listaEstudiantes[i].Facultad == f) arr[pos++] = i;
+            }
+
             OrdenarPorCUMBurbuja(arr);
 
-            Console.WriteLine("   --- TOP / RANKING MEJORES ESTUDIANTES (POR CUM) ---");
+            Console.WriteLine("TOP / RANKING MEJORES ESTUDIANTES (POR CUM)");
             int tope = Math.Min(arr.Length, 3);
             if (tope == 0) Console.WriteLine("   (Sin estudiantes)");
             for (int k = 0; k < tope; k++)
@@ -571,10 +608,22 @@ namespace SistemaGestionUnicaesStruct
 
         static void MostrarRankingCarrera(string c)
         {
-            int[] arr = ObtenersIndicesFiltrados(i => listaEstudiantes[i].Carrera == c);
+            int count = 0;
+            for (int i = 0; i < CAPACIDAD; i++)
+            {
+                if (listaEstudiantes[i].Activo && listaEstudiantes[i].Carrera == c) count++;
+            }
+
+            int[] arr = new int[count];
+            int pos = 0;
+            for (int i = 0; i < CAPACIDAD; i++)
+            {
+                if (listaEstudiantes[i].Activo && listaEstudiantes[i].Carrera == c) arr[pos++] = i;
+            }
+
             OrdenarPorCUMBurbuja(arr);
 
-            Console.WriteLine("   --- TOP / RANKING MEJORES ESTUDIANTES (POR CUM) ---");
+            Console.WriteLine("TOP / RANKING MEJORES ESTUDIANTES (POR CUM)");
             int tope = Math.Min(arr.Length, 3);
             if (tope == 0) Console.WriteLine("   (Sin estudiantes)");
             for (int k = 0; k < tope; k++)
@@ -583,23 +632,6 @@ namespace SistemaGestionUnicaesStruct
                 double cum = CalcularCUM(listaEstudiantes[idx]);
                 Console.WriteLine("   #" + (k + 1) + " - " + listaEstudiantes[idx].Nombre + " (Carnet: " + listaEstudiantes[idx].Carnet + ") - CUM: " + cum.ToString("F2"));
             }
-        }
-
-        static int[] ObtenersIndicesFiltrados(Predicate<int> filtro)
-        {
-            int c = 0;
-            for (int i = 0; i < CAPACIDAD; i++)
-            {
-                if (listaEstudiantes[i].Activo && filtro(i)) c++;
-            }
-
-            int[] res = new int[c];
-            int pos = 0;
-            for (int i = 0; i < CAPACIDAD; i++)
-            {
-                if (listaEstudiantes[i].Activo && filtro(i)) res[pos++] = i;
-            }
-            return res;
         }
 
         static void OrdenarPorCUMBurbuja(int[] arr)
